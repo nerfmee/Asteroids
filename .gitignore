@@ -1,0 +1,30 @@
+# Intellij IDEA
+.idea/
+
+# Unity
+Library/
+obj/
+Out/
+Temp/
+Temp.meta
+
+# C-sharp
+.vs
+.vs/SH
+.vscode
+Assets/Game/Resources/Offline_Settings
+
+# Rider
+Assets/Plugins/Editor
+Assets/Plugins/Editor.meta
+
+UserSettings/EditorUserSettings.asset
+Logs/
+
+
+# MSVC
+*.csproj
+*.DotSettings.user
+*.sln
+*.suo
+*.userprefs
