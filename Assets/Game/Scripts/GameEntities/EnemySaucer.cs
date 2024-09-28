@@ -1,39 +1,31 @@
 using Asteroids.Game.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Asteroids.Game.Runtime
 {
     public class EnemySaucer : NonPlayableMovableEntity
     {
-        private enum SaucerType
-        {
-            Big,
-            Small
-        }
-
         [SerializeField] private float shootDelay;
         [SerializeField] private float updateDirectionDelay;
         [SerializeField] private GameEntity bulletEntity;
-        private float timeStep;
-        private float directionTimeStep;
+        
+        private float _timeStep;
+        private float _directionTimeStep;
 
-
-        public override void UpdateEntity()
+        public override void EntityUpdate()
         {
-            base.UpdateEntity();
+            base.EntityUpdate();
 
-            if (Time.time - timeStep > shootDelay)
+            if (Time.time - _timeStep > shootDelay)
             {
                 GenerateProjectile();
-                timeStep = Time.time;
+                _timeStep = Time.time;
             }
 
-            if (updateDirectionDelay > 0 && Time.time - directionTimeStep > updateDirectionDelay)
+            if (updateDirectionDelay > 0 && Time.time - _directionTimeStep > updateDirectionDelay)
             {
                 SetDirection(Random.insideUnitCircle.normalized);
-                directionTimeStep = Time.time;
+                _directionTimeStep = Time.time;
             }
         }
 
@@ -41,8 +33,8 @@ namespace Asteroids.Game.Runtime
         {
             var direction = Random.insideUnitCircle.normalized;
             var position = transform.position + (Vector3)direction;
-            var obj = Instantiate(bulletEntity as GameEntity, position, Quaternion.identity);
-            obj.SetVisibility(true);
+
+            var obj = PrefabHolder.instance.InstantiateEnemyBullet(position);
             obj.SetDirection(direction);
         }
     }

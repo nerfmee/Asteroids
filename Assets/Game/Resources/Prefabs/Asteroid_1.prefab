@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2716643214475083039}
   - component: {fileID: 2716643214475083037}
   - component: {fileID: 2716643214475083036}
-  m_Layer: 7
-  m_Name: Asteroid1
+  m_Layer: 0
+  m_Name: Asteroid_1
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.36, y: 4.15, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -45,7 +44,6 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -96,25 +94,6 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -140,7 +119,6 @@ PolygonCollider2D:
       - {x: 0.4193376, y: -0.26412106}
       - {x: 0.4250001, y: 0.16175175}
       - {x: 0.32102618, y: 0.40942124}
-  m_UseDelaunayMesh: 0
 --- !u!114 &2716643214475083036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,3 +133,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   sizeType: 0
+  spawnOnDestroyIds: []

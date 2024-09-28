@@ -1,35 +1,49 @@
 using Asteroids.Game.Core;
+using Asteroids.Game.Signals;
 using UnityEngine;
 
 namespace Asteroids.Game.Runtime
 {
     public class Bullet : GameEntity
     {
-        public float speed = 4;
-        public float timeToDestroy = 4f;
-        public float timestep;
+        [SerializeField] private float speed = 4;
+        [SerializeField] private float timeToDestroy = 4f;
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private bool _canUpdateScore;
+        public float _timestep;
+
+        public override void EntityStart()
         {
-            if (collision.gameObject.CompareTag("Asteroid"))
+            base.EntityStart();
+            _canUpdateScore = gameObject.CompareTag("PlayerBullet");
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Asteroid") || collision.gameObject.CompareTag("Saucer"))
             {
                 var entity = collision.gameObject.GetComponent<GameEntity>();
                 if (entity != null)
+                {
+                    if (_canUpdateScore)
+                    {
+                        SignalService.Publish(new UpdateScoreSignal { Value = entity.Score });
+                    }
                     entity.DisposeEntity();
-
+                }
                 DisposeEntity();
             }
         }
 
-        public override void UpdateEntity()
+        public override void EntityUpdate()
         {
             transform.position += speed * Time.deltaTime * MoveDirection;
 
-            timestep += Time.deltaTime;
-            if (timestep > timeToDestroy)
+            _timestep += Time.deltaTime;
+            if (_timestep > timeToDestroy)
             {
                 DisposeEntity();
-                timestep = 0;
+                _timestep = 0;
             }
         }
     }

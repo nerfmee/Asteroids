@@ -9,21 +9,22 @@ namespace Asteroids.Game.Core
 
         public GameObject GameObject => gameObject;
         protected Vector3 MoveDirection => _direction;
+        public int Score { get; private set; }
 
-        public abstract void UpdateEntity();
+        public abstract void EntityUpdate();
 
         private void Start()
         {
-            EntityContainer.AddEntity(this);
+            ContainerManager.AddEntity(this);
         }
 
-        public virtual void Initialize()
+        public virtual void EntityStart()
         {
         }
 
         public virtual void DisposeEntity()
         {
-            EntityContainer.RemoveEntity(this);
+            ContainerManager.RemoveEntity(this);
             Destroy(gameObject);
         }
 
@@ -35,6 +36,15 @@ namespace Asteroids.Game.Core
         public void SetDirection(Vector2 direction)
         {
             _direction = direction;
+        }
+
+        public virtual void EntityFixedUpdate()
+        {
+        }
+
+        public void OnInitialize(int score)
+        {
+            Score = score;
         }
     }
 }

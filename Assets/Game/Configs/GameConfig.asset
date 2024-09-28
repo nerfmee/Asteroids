@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ae4f8c1dc87bcd47b75bf0aac327252, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  totalLives: 3
+  gameElements:
+  - id: ast_1
+    prefab: {fileID: 2716643214475083036, guid: 3b762817614ea8f4aad744a0a1c9c059, type: 3}
+    score: 20
+    spawnOnDestroy:
+    - ast_2
+    - ast_2
+  - id: ast_2
+    prefab: {fileID: 7122012283505314297, guid: 6900319bd6988ed4fa91cbd34ae549e1, type: 3}
+    score: 50
+    spawnOnDestroy:
+    - ast_3
+    - ast_3
+  - id: ast_3
+    prefab: {fileID: 7872655585811822579, guid: 0614bb7f3bacec340b4fab432ac206aa, type: 3}
+    score: 100
+    spawnOnDestroy: []
+  - id: ufo_1
+    prefab: {fileID: 4221898494123077931, guid: 1699a5c594cb5ee4db06d6c30ffb0b1c, type: 3}
+    score: 150
+    spawnOnDestroy: []
+  - id: ufo_2
+    prefab: {fileID: 1198693859695403596, guid: a6f50f6390b3e5e409ecca1735f73d31, type: 3}
+    score: 250
+    spawnOnDestroy: []
+  playerProjectile: {fileID: 508440736845141110, guid: 2b2d72736ddfc0c4994c7aff816536ca, type: 3}
+  enemyProjectile: {fileID: 359312428152593138, guid: fe182ec1d8bb1f84abf171da1809131c, type: 3}
+  playerShip: {fileID: 7767839191421292602, guid: 0720b97a20746ba4ca30dd903eccd794, type: 3}
+  enemyWaves:
+  - count: 4
+    enemies:
+    - ast_1
+    - ast_2
+    delay: 4
+    clamp: 0
+  - count: 10
+    enemies:
+    - ast_1
+    - ast_2
+    - ast_3
+    delay: 4.5
+    clamp: 0
+  - count: 1
+    enemies:
+    - ufo_1
+    delay: 2
+    clamp: 0
+  - count: 2
+    enemies:
+    - ufo_2
+    - ufo_2
+    delay: 2
+    clamp: 0
+  - count: 2
+    enemies:
+    - ast_1
+    - ast_3
+    delay: 2
+    clamp: 0
