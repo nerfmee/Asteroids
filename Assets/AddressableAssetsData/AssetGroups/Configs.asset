@@ -17,10 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 2b114ef611dcce3449e56ff8ff6a6bdd
   m_SerializeEntries:
-  - m_GUID: bee6fb63e0d029d40a0a1349a3dc7256
+  - m_GUID: fd59ed735a1094d43804c18dc5d7a2fa
     m_Address: cfg_gameConfig.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: e1442e654a80a6f41b011c00d87e73fe, type: 2}
   m_SchemaSet:

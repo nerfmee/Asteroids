@@ -1,6 +1,5 @@
 using Asteroids.Game.Core;
 using Asteroids.Game.Signals;
-using System;
 using UnityEngine;
 
 namespace Asteroids.Game.Management
