@@ -28,3 +28,4 @@ Logs/
 *.sln
 *.suo
 *.userprefs
+/UserSettings
