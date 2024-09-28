@@ -1,4 +1,7 @@
-﻿namespace Asteroids.Game.Signals
+﻿using Asteroids.Game.Config;
+using Asteroids.Game.Management;
+
+namespace Asteroids.Game.Signals
 {
     public class UpdateScoreSignal : Signal<int>
     {
@@ -26,5 +29,10 @@
 
     public class PlayerReviveSignal : Signal
     {
+    }
+
+    public class GameConfigLoadedSignal : Signal<GameConfig>
+    {
+
     }
 }

@@ -13,12 +13,12 @@ namespace Asteroids.Game.Config
         [SerializeField] private GameObject playerShip;
         [SerializeField] private Wave[] enemyWaves;
 
-        public int TotalLives { get => totalLives; }
-        public GameplayElement[] GameElements { get => gameElements; }
-        public GameEntity PlayerProjectile { get => playerProjectile; }
-        public GameEntity EnemyProjectile { get => enemyProjectile; }
-        public GameObject PlayerShip { get => playerShip; }
-        public Wave[] EnemyWaves { get => enemyWaves; }
+        public int TotalLives => totalLives;
+        public GameplayElement[] GameElements => gameElements;
+        public GameEntity PlayerProjectile => playerProjectile;
+        public GameEntity EnemyProjectile => enemyProjectile;
+        public GameObject PlayerShip => playerShip;
+        public Wave[] EnemyWaves => enemyWaves;
     }
 
     [System.Serializable]
@@ -27,8 +27,8 @@ namespace Asteroids.Game.Config
         [SerializeField] private string id;
         [SerializeField] private GameEntity prefab;
 
-        public string Id { get => id; set => id = value; }
-        public GameEntity Prefab { get => prefab; set => prefab = value; }
+        public string Id => id;
+        public GameEntity Prefab => prefab;
     }
 
     [System.Serializable]
@@ -37,8 +37,8 @@ namespace Asteroids.Game.Config
         [SerializeField] private int score;
         [SerializeField] private string[] spawnOnDestroy;
 
-        public int Score { get => score; }
-        public string[] SpawnOnDestroy { get => spawnOnDestroy; }
+        public int Score => score;
+        public string[] SpawnOnDestroy => spawnOnDestroy;
     }
 
     [System.Serializable]
@@ -49,9 +49,9 @@ namespace Asteroids.Game.Config
         [SerializeField] private float delay;
         [SerializeField] private bool clamp;
 
-        public int Count { get => count; }
-        public string[] Enemies { get => enemies; }
-        public float Delay { get => delay; }
-        public bool Clamp { get => clamp; }
+        public int Count => count;
+        public string[] Enemies => enemies;
+        public float Delay => delay;
+        public bool Clamp => clamp;
     }
 }

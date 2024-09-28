@@ -1,9 +1,9 @@
 using Asteroids.Game.Core;
 using Asteroids.Game.Signals;
-using Asteroids.Game.Management;
+using System;
 using UnityEngine;
 
-namespace Asteroids.Game.Runtime
+namespace Asteroids.Game.Management
 {
     public class ContainerManager : MonoBehaviour
     {

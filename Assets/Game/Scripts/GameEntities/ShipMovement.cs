@@ -1,4 +1,5 @@
 using Asteroids.Game.Core;
+using Asteroids.Game.Management;
 using Asteroids.Game.Signals;
 using System.Collections;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Asteroids.Game.Runtime
         [SerializeField] private Rigidbody2D shipRigidbody2D;
         [SerializeField] private Collider2D shipCollider2D;
         [SerializeField] private SpriteRenderer renderer2D;
+        [SerializeField] private GameEntity bullet;
         [SerializeField] private float nextBulletSpawnTime = 1f;
 
         private float _currentTime;
