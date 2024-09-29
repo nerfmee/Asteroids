@@ -9,7 +9,7 @@ namespace Asteroids.Game.Management
 {
     public class AddressableManager : MonoBehaviour
     {
-        [SerializeField] private string _assetPath;
+        [SerializeField] private AssetReference _gameConfigRef;
 
         private IEnumerator Start()
         {
@@ -18,7 +18,7 @@ namespace Asteroids.Game.Management
             //Fake Delay
             yield return new WaitForSeconds(1f);
 
-            LoadAddressableAsync<GameConfig>(_assetPath, (handle) =>
+            LoadAddressableAsync<GameConfig>(_gameConfigRef, (handle) =>
             {
                 SignalService.Publish(new GameConfigLoadedSignal { Value = handle.Result });
             });
@@ -27,6 +27,16 @@ namespace Asteroids.Game.Management
         private void LoadAddressableAsync<T>(string assetPath, System.Action<AsyncOperationHandle<T>> callback)
         {
             var operation = Addressables.LoadAssetAsync<T>(assetPath);
+            operation.Completed += (handler) =>
+            {
+                if (handler.IsDone)
+                    callback.Invoke(handler);
+            };
+        }
+
+        private void LoadAddressableAsync<T>(AssetReference assetReference, System.Action<AsyncOperationHandle<T>> callback)
+        {
+            var operation = assetReference.LoadAssetAsync<T>();
             operation.Completed += (handler) =>
             {
                 if (handler.IsDone)
