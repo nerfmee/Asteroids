@@ -9,7 +9,7 @@ namespace Asteroids.Game.Core
 
         public GameObject GameObject => gameObject;
         protected Vector3 MoveDirection => _direction;
-        public int Score { get; private set; }
+        public int DieScore { get; private set; }
 
         public abstract void EntityUpdate();
 
@@ -44,7 +44,7 @@ namespace Asteroids.Game.Core
 
         public void OnInitialize(int score)
         {
-            Score = score;
+            DieScore = score;
         }
     }
 }

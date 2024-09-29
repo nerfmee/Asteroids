@@ -35,7 +35,7 @@ namespace Asteroids.Game.Management
 
             if(_gameState == GameState.GameOver)
             {
-                _game.OnStateChanged(null);
+                _game?.OnStateChanged(null);
             }
         }
 
@@ -97,6 +97,11 @@ namespace Asteroids.Game.Management
 
             if (_instance._game != null)
                 _instance._game.OnFixedUpdate();
+        }
+        
+        private void OnDestroy()
+        {
+            _game = null;
         }
     }
 }

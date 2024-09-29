@@ -21,20 +21,21 @@ namespace Asteroids.Game.Management
         [SerializeField] private float newGameStartDelay = 2f;
 
         private int currentScore = 0;
-        public int totalLives = 3;
+        public int TotalLives { get; private set; }
 
         private void OnEnable()
         {
+            SignalService.Subscribe<GameConfigLoadedSignal>(OnGameConfigLoaded);
             SignalService.Subscribe<UpdateScoreSignal>(AddScore);
             SignalService.Subscribe<GameStateUpdateSignal>(SetGameState);
             SignalService.Subscribe<PlayerDiedSignal>(PlayerDeathSignal);
         }
-
         private void OnDisable()
         {
+            SignalService.RemoveSignal<GameConfigLoadedSignal>(OnGameConfigLoaded);
             SignalService.RemoveSignal<UpdateScoreSignal>(AddScore);
             SignalService.RemoveSignal<GameStateUpdateSignal>(SetGameState);
-            SignalService.Subscribe<PlayerDiedSignal>(PlayerDeathSignal);
+            SignalService.RemoveSignal<PlayerDiedSignal>(PlayerDeathSignal);
         }
 
         public void SetGameState(GameStateUpdateSignal signal)
@@ -86,7 +87,7 @@ namespace Asteroids.Game.Management
         private void StartGame()
         {
             currentScore = 0;
-            totalLives = 3;
+            TotalLives = 3;
             MenuManager.HideMenu<MainMenuView>();
             var menu = MenuManager.ShowMenu<GameplayView>();
             menu.DisplayScore(currentScore);
@@ -116,20 +117,30 @@ namespace Asteroids.Game.Management
             SignalService.Publish(new DisplayScoreSignal { Value = currentScore });
         }
 
+        public void SetTotalLives(int count)
+        {
+            TotalLives = count;
+        }
+
         private void PlayerDeathSignal(PlayerDiedSignal signal)
         {
-            totalLives -= 1;
+            TotalLives -= 1;
 
-            if (totalLives <= 0)
+            if (TotalLives <= 0)
             {
-                totalLives = 0;
+                TotalLives = 0;
                 SignalService.Publish(new GameStateUpdateSignal { Value = GameState.GameOver });
             }
             else
             {
-                SignalService.Publish(new UpdatePlayerLivesSignal { Value = totalLives });
+                SignalService.Publish(new UpdatePlayerLivesSignal { Value = TotalLives });
                 SignalService.Publish<PlayerReviveSignal>();
             }
+        }
+
+        private void OnGameConfigLoaded(GameConfigLoadedSignal signal)
+        {
+            TotalLives = signal.Value.TotalLives;
         }
     }
 }
