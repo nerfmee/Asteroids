@@ -10,7 +10,7 @@ namespace Asteroids.Game.Runtime
         [SerializeField] private float timeToDestroy = 4f;
 
         private bool _canUpdateScore;
-        public float _timestep;
+        private float _timestep;
 
         public override void EntityStart()
         {

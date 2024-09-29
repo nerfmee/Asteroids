@@ -1,17 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Asteroids.Game.Config;
+using Asteroids.Game.Management;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Asteroids.Game.Core
 {
     public class GameLoop : IGame
     {
+        private EnemySpawnManager _spawnManager;
         private List<IGameEntity> _gameEntities;
         private Vector3 _bottomLeftPoint;
         private Vector3 _topRightPoint;
 
-        public GameLoop()
+        public GameLoop(GameConfig gameConfig)
         {
             _gameEntities = new List<IGameEntity>();
+            _spawnManager = new EnemySpawnManager(gameConfig);
             SetCameraBounds();
         }
 
@@ -36,6 +40,7 @@ namespace Asteroids.Game.Core
                 GameObject.Destroy(item.GameObject);
             }
             _gameEntities.Clear();
+            _spawnManager.Clear();
         }
 
         public void RemoveGameEntity(IGameEntity gameEntity)
@@ -48,6 +53,8 @@ namespace Asteroids.Game.Core
 
         public void UpdateGame()
         {
+            _spawnManager.OnUpdate();
+
             for (int i = 0; i < _gameEntities?.Count; i++)
             {
                 var entity = _gameEntities[i];
@@ -64,7 +71,7 @@ namespace Asteroids.Game.Core
             }
         }
 
-        public void HandleScreenWarp(Transform target, Vector3 direction)
+        private void HandleScreenWarp(Transform target, Vector3 direction)
         {
             if (target != null)
             {
@@ -92,7 +99,5 @@ namespace Asteroids.Game.Core
                 target.position = pos;
             }
         }
-
-        
     }
 }
