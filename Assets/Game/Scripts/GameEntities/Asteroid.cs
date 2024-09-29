@@ -29,7 +29,7 @@ namespace Asteroids.Game.Runtime
                 case AsteroidSize.Large:
                     for (int i = 0; i < 2; i++)
                     {
-                        PrefabHolder.instance.InstantiateEntity("ast_2", transform.position);
+                        PrefabHolder.Instance.InstantiateEntity("ast_2", transform.position);
                     }
 
                     break;
@@ -37,7 +37,7 @@ namespace Asteroids.Game.Runtime
                 case AsteroidSize.Medium:
                     for (int i = 0; i < 2; i++)
                     {
-                        PrefabHolder.instance.InstantiateEntity("ast_3", transform.position);
+                        PrefabHolder.Instance.InstantiateEntity("ast_3", transform.position);
                     }
                     break;
 

@@ -36,7 +36,7 @@ namespace Asteroids.Game.Management
                 var pos = new Vector2(Mathf.Cos(degrees) * radius, Mathf.Sin(degrees) * radius);
 
                 var entityId = wave.Enemies[Random.Range(0, wave.Enemies.Length)];
-                PrefabHolder.instance.InstantiateEntity(entityId, pos);
+                PrefabHolder.Instance.InstantiateEntity(entityId, pos);
 
                 _waveEnemiesCount += 1;
 

@@ -1,7 +1,7 @@
 using Asteroids.Game.Core;
-using Asteroids.Game.Management;
 using Asteroids.Game.Signals;
 using System.Collections;
+using Game.Scripts.GameEntities;
 using UnityEngine;
 
 namespace Asteroids.Game.Runtime
@@ -13,18 +13,17 @@ namespace Asteroids.Game.Runtime
         [SerializeField] private Rigidbody2D shipRigidbody2D;
         [SerializeField] private Collider2D shipCollider2D;
         [SerializeField] private SpriteRenderer renderer2D;
-        [SerializeField] private GameEntity bullet;
-        [SerializeField] private float nextBulletSpawnTime = 1f;
-
-        private float _currentTime;
         private bool _isReviving;
+        private BulletWeapon _bulletWeapon;
+        private LaserWeapon _laserWeapon;
 
         public override void EntityStart()
         {
             base.EntityStart();
 
+            _bulletWeapon = new BulletWeapon(transform, new Vector2(0, 0.6f), 0.5f);
+            _laserWeapon = new LaserWeapon(transform, new Vector2(0, 0.6f), 1.0f);
             SetDirection(new Vector2(0, 1));
-            _currentTime = 0;
         }
 
         public override void EntityUpdate()
@@ -41,13 +40,14 @@ namespace Asteroids.Game.Runtime
                 SetDirection(transform.TransformDirection(Vector3.up));
             }
 
-            if (Input.GetKeyDown(KeyCode.Z) && Time.time - _currentTime > nextBulletSpawnTime)
+            if (Input.GetKeyDown(KeyCode.Z))
             {
-                var position = transform.TransformPoint(new Vector2(0, 0.6f));
-                var obj = PrefabHolder.instance.InstantiatePlayerBullet(position);
-                obj.SetDirection(MoveDirection);
-
-                _currentTime = Time.time;
+                _bulletWeapon.TryShoot(MoveDirection);
+            }
+            
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                _laserWeapon.TryShoot(MoveDirection);
             }
         }
 
@@ -56,8 +56,8 @@ namespace Asteroids.Game.Runtime
             if (_isReviving)
                 return;
 
-            var _addThrust = Input.GetAxis("Vertical") != 0;
-            if (_addThrust && shipRigidbody2D != null)
+            var addThrust = Input.GetAxis("Vertical") != 0;
+            if (addThrust && shipRigidbody2D != null)
             {
                 shipRigidbody2D.AddForce(MoveDirection * maxThrust, ForceMode2D.Force);
             }

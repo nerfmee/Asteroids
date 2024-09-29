@@ -1,23 +1,23 @@
 using Asteroids.Game.Core;
 using Asteroids.Game.Signals;
+using Game.Scripts.GameEntities;
 using UnityEngine;
 
 namespace Asteroids.Game.Runtime
 {
-    public class Bullet : GameEntity
+    public class Bullet : Projectile
     {
-        [SerializeField] private float speed = 4;
-        [SerializeField] private float timeToDestroy = 4f;
-
         private bool _canUpdateScore;
-        private float _timestep;
-
         public override void EntityStart()
         {
             base.EntityStart();
             _canUpdateScore = gameObject.CompareTag("PlayerBullet");
         }
 
+        protected override void Move()
+        {
+            transform.position += speed * Time.deltaTime * MoveDirection;
+        }
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Asteroid") || collision.gameObject.CompareTag("Saucer"))
@@ -25,26 +25,19 @@ namespace Asteroids.Game.Runtime
                 var entity = collision.gameObject.GetComponent<GameEntity>();
                 if (entity != null)
                 {
-                    if (_canUpdateScore)
-                    {
-                        SignalService.Publish(new UpdateScoreSignal { Value = entity.DieScore });
-                    }
-                    entity.DisposeEntity();
+                    OnHit(entity);
                 }
                 DisposeEntity();
             }
         }
-
-        public override void EntityUpdate()
+        
+        protected virtual void OnHit(GameEntity entity)
         {
-            transform.position += speed * Time.deltaTime * MoveDirection;
-
-            _timestep += Time.deltaTime;
-            if (_timestep > timeToDestroy)
+            if (_canUpdateScore)
             {
-                DisposeEntity();
-                _timestep = 0;
+                SignalService.Publish(new UpdateScoreSignal { Value = entity.DieScore });
             }
+            entity.DisposeEntity();
         }
     }
 }

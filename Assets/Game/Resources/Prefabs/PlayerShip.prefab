@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -4360530552843628718, guid: 00fd57884d7a9014c9759d0b8027e4b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -104,7 +104,6 @@ MonoBehaviour:
   shipRigidbody2D: {fileID: 7767839191421292598}
   shipCollider2D: {fileID: 8574700282501232183}
   renderer2D: {fileID: 7767839191421292597}
-  nextBulletSpawnTime: 0.2
 --- !u!50 &7767839191421292598
 Rigidbody2D:
   serializedVersion: 4

@@ -9,6 +9,7 @@ namespace Asteroids.Game.Config
         [SerializeField] private int totalLives = 3;
         [SerializeField] private GameplayElement[] gameElements;
         [SerializeField] private GameEntity playerProjectile;
+        [SerializeField] private GameEntity playerLaser;
         [SerializeField] private GameEntity enemyProjectile;
         [SerializeField] private GameObject playerShip;
         [SerializeField] private Wave[] enemyWaves;
@@ -16,6 +17,7 @@ namespace Asteroids.Game.Config
         public int TotalLives => totalLives;
         public GameplayElement[] GameElements => gameElements;
         public GameEntity PlayerProjectile => playerProjectile;
+        public GameEntity PlayerLaser => playerLaser;
         public GameEntity EnemyProjectile => enemyProjectile;
         public GameObject PlayerShip => playerShip;
         public Wave[] EnemyWaves => enemyWaves;

@@ -81,7 +81,7 @@ namespace Asteroids.Game.Management
 
             mainMenu.ToggleStartButton(true);
 
-            PrefabHolder.instance.SpawnPlayerShip();
+            PrefabHolder.Instance.SpawnPlayerShip();
         }
 
         private void StartGame()

@@ -8,12 +8,12 @@ namespace Asteroids.Game.Management
 {
     public class PrefabHolder : MonoBehaviour
     {
-        public static PrefabHolder instance;
+        public static PrefabHolder Instance;
         private GameConfig _config;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
 
         private void OnEnable()
@@ -36,6 +36,11 @@ namespace Asteroids.Game.Management
         {
             return InstantiateEntity(_config.PlayerProjectile, position);
         }
+        
+        public IGameEntity InstantiatePlayerLaser(Vector3 position)
+        {
+            return InstantiateEntity(_config.PlayerLaser, position);
+        }
 
         public IGameEntity InstantiateEnemyBullet(Vector3 position)
         {
@@ -55,7 +60,7 @@ namespace Asteroids.Game.Management
             Instantiate(_config.PlayerShip, Vector3.zero, Quaternion.identity);
         }
 
-        public IGameEntity InstantiateEntity(IGameEntity entity, Vector2 position)
+        private IGameEntity InstantiateEntity(IGameEntity entity, Vector2 position)
         {
             var obj = Instantiate(entity as GameEntity, position, Quaternion.identity);
             obj.SetVisibility(true);

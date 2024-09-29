@@ -39,6 +39,7 @@ MonoBehaviour:
     score: 250
     spawnOnDestroy: []
   playerProjectile: {fileID: 508440736845141110, guid: 2b2d72736ddfc0c4994c7aff816536ca, type: 3}
+  playerLaser: {fileID: 4430118249730853745, guid: 1b634f820b9e0104f9e16be46f7250dc, type: 3}
   enemyProjectile: {fileID: 359312428152593138, guid: fe182ec1d8bb1f84abf171da1809131c, type: 3}
   playerShip: {fileID: 7767839191421292602, guid: 0720b97a20746ba4ca30dd903eccd794, type: 3}
   enemyWaves:
