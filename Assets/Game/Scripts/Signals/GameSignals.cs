@@ -11,7 +11,7 @@ namespace Asteroids.Game.Signals
     {
     }
 
-    public class SpaceBarPressedSignal : Signal
+    public class RemoveAllGameEntitiesSignal : Signal
     {
     }
 

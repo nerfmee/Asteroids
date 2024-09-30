@@ -30,10 +30,8 @@ namespace Asteroids.Game.Core
             _gameEntities.Add(gameEntity);
         }
 
-        public void OnStateChanged(IGameState state)
+        public void DisposeGameEntities()
         {
-            state?.Execute();
-
             foreach (var item in _gameEntities)
             {
                 GameObject.Destroy(item.GameObject);

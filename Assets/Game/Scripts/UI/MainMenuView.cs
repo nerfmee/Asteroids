@@ -14,7 +14,6 @@ namespace Asteroids.Game.UI
         public override void OnScreenEnter()
         {
             base.OnScreenEnter();
-            _signalService.Subscribe<SpaceBarPressedSignal>(OnSpaceBarPressed);
 
             buttonStartGame.onClick.RemoveAllListeners();
             buttonStartGame.onClick.AddListener(() => StartGameClicked());
@@ -23,15 +22,6 @@ namespace Asteroids.Game.UI
         public override void OnScreenExit()
         {
             base.OnScreenExit();
-            _signalService.RemoveSignal<SpaceBarPressedSignal>(OnSpaceBarPressed);
-        }
-
-        private void OnSpaceBarPressed(SpaceBarPressedSignal signal)
-        {
-            if (MainManager.CurrentGameState == GameState.Ready)
-            {
-                StartGameClicked();
-            }
         }
 
         public void StartGameClicked()

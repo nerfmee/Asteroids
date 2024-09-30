@@ -12,10 +12,4 @@ namespace Asteroids.Game.Core
         void DisposeEntity();
         void SetVisibility(bool isVisible);
     }
-
-    public interface IGameState
-    {
-        void Permit();
-        void Execute();
-    }
 }

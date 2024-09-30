@@ -1,6 +1,5 @@
+using Asteroids.Game.Services;
 using Asteroids.Game.Signals;
-using Asteroids.Game.UI;
-using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -16,19 +15,20 @@ namespace Asteroids.Game.Management
 
     public class MainManager : MonoBehaviour
     {
-        public static GameState CurrentGameState { get; private set; }
-
-        [SerializeField] private GameState gameState;
-        [SerializeField] private float newGameStartDelay = 2f;
-
+        public static GameState MockGameState { get; private set; }
         public int TotalLives { get; private set; }
 
-        private int _currentScore = 0;
-        
+
         private ISignalService _signalService;
+        private IPlayerProfileService _playerProfileService;
 
         [Inject]
-        private void InitSignalService(ISignalService signalService) => _signalService = signalService;
+        private void InitServices(ISignalService signalService,
+            IPlayerProfileService playerProfileService)
+        {
+            _signalService = signalService;
+            _playerProfileService = playerProfileService;
+        }
 
         private void OnEnable()
         {
@@ -36,8 +36,8 @@ namespace Asteroids.Game.Management
             _signalService.Subscribe<UpdateScoreSignal>(AddScore);
             _signalService.Subscribe<GameStateUpdateSignal>(SetGameState);
             _signalService.Subscribe<PlayerDiedSignal>(PlayerDeathSignal);
-            
         }
+
         private void OnDisable()
         {
             _signalService.RemoveSignal<GameConfigLoadedSignal>(OnGameConfigLoaded);
@@ -48,103 +48,35 @@ namespace Asteroids.Game.Management
 
         public void SetGameState(GameStateUpdateSignal signal)
         {
-            CurrentGameState = gameState = signal.Value;
-
-            switch (gameState)
-            {
-                case GameState.Loading:
-                    SetGameLoadState();
-                    break;
-
-                case GameState.Ready:
-                    SetGameReadyState();
-                    break;
-
-                case GameState.Running:
-                    StartGame();
-                    break;
-
-                case GameState.GameOver:
-                    ShowGameOverScreen();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void SetGameLoadState()
-        {
-            var mainMenu = MenuManager.ShowMenu<MainMenuView>();
-            MenuManager.HideMenu<GameplayView>();
-            gameState = CurrentGameState = GameState.Loading;
-            mainMenu.ToggleStartButton(false);
-        }
-
-        private void SetGameReadyState()
-        {
-            var mainMenu = MenuManager.ShowMenu<MainMenuView>();
-            MenuManager.HideMenu<GameplayView>();
-            gameState = CurrentGameState = GameState.Ready;
-
-            mainMenu.ToggleStartButton(true);
-
-            //PrefabHolder.instance.SpawnPlayerShip();
-        }
-
-        private void StartGame()
-        {
-            _currentScore = 0;
-            TotalLives = 3;
-            MenuManager.HideMenu<MainMenuView>();
-            var menu = MenuManager.ShowMenu<GameplayView>();
-            menu.DisplayScore(_currentScore);
-            menu.SetTitle(string.Empty);
-        }
-
-        private void ShowGameOverScreen()
-        {
-            MenuManager.HideMenu<MainMenuView>();
-            var menu = MenuManager.GetMenu<GameplayView>();
-            menu.DisplayScore(_currentScore);
-            menu.SetTitle("Gameover");
-            menu.Clear();
-
-            StartCoroutine(DelayedCall(newGameStartDelay));
-        }
-
-        private IEnumerator DelayedCall(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-
-            _signalService.Publish(new GameStateUpdateSignal { Value = GameState.Ready });
+            MockGameState = signal.Value;
         }
 
         private void AddScore(UpdateScoreSignal signal)
         {
-            _currentScore += signal.Value;
-            _signalService.Publish(new DisplayScoreSignal { Value = _currentScore });
+            _playerProfileService.AddScore(signal.Value);
+            _signalService.Publish(new DisplayScoreSignal { Value = _playerProfileService.GetScore() });
         }
 
-        public void SetTotalLives(int count)
+        public void MockSetTotalLives(int count)
         {
             TotalLives = count;
         }
 
         private void PlayerDeathSignal(PlayerDiedSignal signal)
         {
-            TotalLives -= 1;
-
-            if (TotalLives <= 0)
+            var lives = _playerProfileService.GetTotalLives();
+            lives -= 1;
+            if (lives <= 0)
             {
-                TotalLives = 0;
+                lives = 0;
                 _signalService.Publish(new GameStateUpdateSignal { Value = GameState.GameOver });
             }
             else
             {
-                _signalService.Publish(new UpdatePlayerLivesSignal { Value = TotalLives });
+                _signalService.Publish(new UpdatePlayerLivesSignal { Value = lives });
                 _signalService.Publish<PlayerReviveSignal>();
             }
+            _playerProfileService.SetTotalLives(lives);
         }
 
         private void OnGameConfigLoaded(GameConfigLoadedSignal signal)

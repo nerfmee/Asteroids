@@ -20,7 +20,7 @@ namespace Asteroids.Game.Core
         protected ISignalService _signalService;
 
         [Inject]
-        private void Init(IGameContainer gameContainer,
+        private void InitServices(IGameContainer gameContainer,
             GameEntitySpawnService spawnManager,
             ISignalService signalService)
         {
@@ -34,9 +34,7 @@ namespace Asteroids.Game.Core
         {
         }
 
-        public virtual void EntityUpdate()
-        {
-        }
+        public abstract void EntityUpdate();
 
         public virtual void EntityFixedUpdate()
         {

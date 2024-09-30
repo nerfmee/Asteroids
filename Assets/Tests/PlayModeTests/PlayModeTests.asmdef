@@ -6,7 +6,9 @@
         "UnityEditor.TestRunner",
         "GameAssembly",
         "Unity.ResourceManager",
-        "Unity.Addressables"
+        "Unity.Addressables",
+        "Zenject-TestFramework",
+        "Zenject"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

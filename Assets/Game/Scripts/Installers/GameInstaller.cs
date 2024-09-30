@@ -18,8 +18,14 @@ namespace Asteroids.Game.Installers
             Container.BindInterfacesAndSelfTo<GameContainer>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyWavesSpawnService>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameEntitySpawnService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<GameConfigurationFacade>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ConfigCollectionService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerProfileService>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameLoop>().AsSingle().WhenInjectedInto<GameContainer>();
+
+            Container.Bind<IGameState>().To<GameReadyState>().AsSingle().WhenInjectedInto<GameContainer>();
+            Container.Bind<IGameState>().To<GameLoadState>().AsSingle().WhenInjectedInto<GameContainer>();
+            Container.Bind<IGameState>().To<GameRunningState>().AsSingle().WhenInjectedInto<GameContainer>();
+            Container.Bind<IGameState>().To<GameOverState>().AsSingle().WhenInjectedInto<GameContainer>();
         }
     }
 }

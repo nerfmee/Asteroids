@@ -1,5 +1,4 @@
 ﻿using Asteroids.Game.Config;
-using Asteroids.Game.Core;
 using Asteroids.Game.Services;
 using Asteroids.Game.Signals;
 using UnityEngine;
@@ -19,11 +18,11 @@ namespace Asteroids.Game.Management
         private GameEntitySpawnService _spawnService;
 
         [Inject]
-        private void Init(IConfigCollectionService facade,
+        private void Init(IConfigCollectionService configService,
             ISignalService signalService,
             GameEntitySpawnService spawnService)
         {
-            _configService = facade;
+            _configService = configService;
             _signalService = signalService;
             _spawnService = spawnService;
         }

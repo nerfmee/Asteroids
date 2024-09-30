@@ -1,7 +1,12 @@
+using Asteroids.Game.Management;
+using Asteroids.Game.Services;
 using Asteroids.Game.Signals;
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Asteroids.Game.UI
 {
@@ -12,19 +17,12 @@ namespace Asteroids.Game.UI
         [SerializeField] private GameObject stubChances;
         [SerializeField] private Image chanceImage;
         [SerializeField] private Image[] totalChances;
-
+        
         public override void OnScreenEnter()
         {
             base.OnScreenEnter();
             _signalService.Subscribe<DisplayScoreSignal>(OnScoreUpdated);
             _signalService.Subscribe<UpdatePlayerLivesSignal>(OnPlayerLifeChanged);
-
-            totalChances = new Image[3];
-            for (int i = 0; i < totalChances.Length; i++)
-            {
-                totalChances[i] = Instantiate(chanceImage, stubChances.transform);
-                totalChances[i].gameObject.SetActive(true);
-            }
         }
 
         public override void OnScreenExit()
@@ -35,6 +33,18 @@ namespace Asteroids.Game.UI
             _signalService.RemoveSignal<UpdatePlayerLivesSignal>(OnPlayerLifeChanged);
 
             Clear();
+        }
+
+        public void DisplayPlayerLivesUI(int count)
+        {
+            Clear();
+
+            totalChances = new Image[count];
+            for (int i = 0; i < totalChances.Length; i++)
+            {
+                totalChances[i] = Instantiate(chanceImage, stubChances.transform);
+                totalChances[i].gameObject.SetActive(true);
+            }
         }
 
         public void DisplayScore(int currentScore)
@@ -67,6 +77,18 @@ namespace Asteroids.Game.UI
             {
                 totalChances[i].gameObject.SetActive(false);
             }
+        }
+
+        internal void DelayedStartNewGame()
+        {
+            StartCoroutine(DelayedCall(2f));
+        }
+
+        private IEnumerator DelayedCall(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            _signalService.Publish(new GameStateUpdateSignal { Value = GameState.Ready });
         }
     }
 }
