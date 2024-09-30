@@ -1,6 +1,7 @@
 using Asteroids.Game.Core;
 using Asteroids.Game.Management;
 using UnityEngine;
+using Zenject;
 
 namespace Asteroids.Game.Runtime
 {
@@ -15,6 +16,7 @@ namespace Asteroids.Game.Runtime
 
         [SerializeField] private AsteroidSize sizeType;
         [SerializeField] private string[] spawnOnDestroyIds;
+        
 
         public override void DisposeEntity()
         {
@@ -29,7 +31,7 @@ namespace Asteroids.Game.Runtime
                 case AsteroidSize.Large:
                     for (int i = 0; i < 2; i++)
                     {
-                        PrefabHolder.Instance.InstantiateEntity("ast_2", transform.position);
+                        _spawnService.InstantiateEntity("ast_2", transform.position);
                     }
 
                     break;
@@ -37,7 +39,7 @@ namespace Asteroids.Game.Runtime
                 case AsteroidSize.Medium:
                     for (int i = 0; i < 2; i++)
                     {
-                        PrefabHolder.Instance.InstantiateEntity("ast_3", transform.position);
+                        _spawnService.InstantiateEntity("ast_3", transform.position);
                     }
                     break;
 

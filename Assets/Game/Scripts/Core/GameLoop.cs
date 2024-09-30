@@ -1,21 +1,20 @@
-﻿using Asteroids.Game.Config;
-using Asteroids.Game.Management;
+﻿using Asteroids.Game.Management;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Asteroids.Game.Core
 {
-    public class GameLoop : IGame
+    public class GameLoop : IGameLoop
     {
-        private EnemySpawnManager _spawnManager;
+        private EnemyWavesSpawnService _enemyWaveSpawnService;
         private List<IGameEntity> _gameEntities;
         private Vector3 _bottomLeftPoint;
         private Vector3 _topRightPoint;
 
-        public GameLoop(GameConfig gameConfig)
+        public GameLoop(EnemyWavesSpawnService enemySpawnService)
         {
             _gameEntities = new List<IGameEntity>();
-            _spawnManager = new EnemySpawnManager(gameConfig);
+            _enemyWaveSpawnService = enemySpawnService;
             SetCameraBounds();
         }
 
@@ -40,7 +39,7 @@ namespace Asteroids.Game.Core
                 GameObject.Destroy(item.GameObject);
             }
             _gameEntities.Clear();
-            _spawnManager.Clear();
+            _enemyWaveSpawnService.Clear();
         }
 
         public void RemoveGameEntity(IGameEntity gameEntity)
@@ -51,9 +50,9 @@ namespace Asteroids.Game.Core
             }
         }
 
-        public void UpdateGame()
+        public void UpdateFrame()
         {
-            _spawnManager.OnUpdate();
+            _enemyWaveSpawnService.OnUpdate();
 
             for (int i = 0; i < _gameEntities?.Count; i++)
             {
@@ -63,7 +62,7 @@ namespace Asteroids.Game.Core
             }
         }
 
-        public void OnFixedUpdate()
+        public void FixedUpdateFrame()
         {
             for (int i = 0; i < _gameEntities?.Count; i++)
             {

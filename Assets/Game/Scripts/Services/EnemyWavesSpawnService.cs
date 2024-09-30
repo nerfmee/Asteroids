@@ -1,22 +1,46 @@
 ﻿using Asteroids.Game.Config;
+using Asteroids.Game.Core;
+using Asteroids.Game.Services;
+using Asteroids.Game.Signals;
 using UnityEngine;
+using Zenject;
 
 namespace Asteroids.Game.Management
 {
-    public class EnemySpawnManager
+    public class EnemyWavesSpawnService : IInitializable
     {
         private GameConfig _gameConfig;
         private int _currentWave;
         private int _waveEnemiesCount;
         private float _timeStep;
 
-        public EnemySpawnManager(GameConfig gameConfig)
+        private IConfigCollectionService _configService;
+        private ISignalService _signalService;
+        private GameEntitySpawnService _spawnService;
+
+        [Inject]
+        private void Init(IConfigCollectionService facade,
+            ISignalService signalService,
+            GameEntitySpawnService spawnService)
         {
-            _gameConfig = gameConfig;
+            _configService = facade;
+            _signalService = signalService;
+            _spawnService = spawnService;
+        }
+
+        public void Initialize()
+        {
+            _signalService.Subscribe<GameConfigLoadedSignal>(OnGameConfigLoaded);
         }
 
         public void OnUpdate()
         {
+            if (_gameConfig == null)
+            {
+                _gameConfig = _configService.GameConfig;
+                return;
+            }
+
             var wave = _gameConfig.EnemyWaves[_currentWave];
             if (Time.time - _timeStep > wave.Delay)
             {
@@ -36,7 +60,7 @@ namespace Asteroids.Game.Management
                 var pos = new Vector2(Mathf.Cos(degrees) * radius, Mathf.Sin(degrees) * radius);
 
                 var entityId = wave.Enemies[Random.Range(0, wave.Enemies.Length)];
-                PrefabHolder.Instance.InstantiateEntity(entityId, pos);
+                _spawnService.InstantiateEntity(entityId, pos);
 
                 _waveEnemiesCount += 1;
 
@@ -49,6 +73,11 @@ namespace Asteroids.Game.Management
             _currentWave = 0;
             _waveEnemiesCount = 0;
             _timeStep = 0;
+        }
+
+        private void OnGameConfigLoaded(GameConfigLoadedSignal signal)
+        {
+            _signalService.Publish(new GameStateUpdateSignal { Value = GameState.Ready });
         }
     }
 }

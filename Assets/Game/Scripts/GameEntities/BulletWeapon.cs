@@ -10,10 +10,10 @@ namespace Game.Scripts.GameEntities
         {
         }
 
-        protected override void Shoot(Vector2 moveDirection)
+        protected override void Shoot(GameEntitySpawnService spawnService, Vector2 moveDirection)
         {
             var position = PlayerTransform.TransformPoint(Offset);
-            var bullet = PrefabHolder.Instance.InstantiatePlayerBullet(position);
+            var bullet = spawnService.InstantiatePlayerBullet(position);
             bullet.SetDirection(moveDirection);
         }
     }

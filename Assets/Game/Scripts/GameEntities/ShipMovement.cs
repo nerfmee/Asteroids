@@ -42,12 +42,12 @@ namespace Asteroids.Game.Runtime
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                _bulletWeapon.TryShoot(MoveDirection);
+                _bulletWeapon.TryShoot(_spawnService, MoveDirection);
             }
             
             if (Input.GetKeyDown(KeyCode.X))
             {
-                _laserWeapon.TryShoot(MoveDirection);
+                _laserWeapon.TryShoot(_spawnService,MoveDirection);
             }
         }
 
@@ -68,7 +68,7 @@ namespace Asteroids.Game.Runtime
             if (_isReviving)
                 return;
 
-            SignalService.Publish<PlayerDiedSignal>();
+            _signalService.Publish<PlayerDiedSignal>();
             shipCollider2D.enabled = false;
             renderer2D.enabled = false;
             _isReviving = true;
@@ -76,12 +76,12 @@ namespace Asteroids.Game.Runtime
 
         private void OnEnable()
         {
-            SignalService.Subscribe<PlayerReviveSignal>(OnPlayerShipRevived);
+            _signalService.Subscribe<PlayerReviveSignal>(OnPlayerShipRevived);
         }
 
         private void OnDisable()
         {
-            SignalService.RemoveSignal<PlayerReviveSignal>(OnPlayerShipRevived);
+            _signalService.RemoveSignal<PlayerReviveSignal>(OnPlayerShipRevived);
         }
 
         private void OnPlayerShipRevived(PlayerReviveSignal signal)

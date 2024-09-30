@@ -18,7 +18,7 @@ public class PlayModeTestScript
     {
         mockEnvironment = MonoBehaviour.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Tests/MockEnvironment.prefab"));
         gameConfig = AssetDatabase.LoadAssetAtPath<GameConfig>("Assets/Config/GameConfig.asset");
-        SignalService.Publish(new GameConfigLoadedSignal { Value = gameConfig });
+        //SignalService.Publish(new GameConfigLoadedSignal { Value = gameConfig });
     }
 
     [TearDown]

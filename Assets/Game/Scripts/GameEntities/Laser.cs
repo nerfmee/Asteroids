@@ -43,7 +43,7 @@ namespace Game.Scripts.GameEntities
 
         protected virtual void UpdateScore(GameEntity entity)
         {
-            SignalService.Publish(new UpdateScoreSignal { Value = entity.DieScore });
+            _signalService.Publish(new UpdateScoreSignal { Value = entity.DieScore });
         }
     }
 }

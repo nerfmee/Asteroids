@@ -33,6 +33,5 @@ namespace Asteroids.Game.Signals
 
     public class GameConfigLoadedSignal : Signal<GameConfig>
     {
-
     }
 }

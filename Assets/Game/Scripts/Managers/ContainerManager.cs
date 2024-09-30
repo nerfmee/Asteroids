@@ -2,14 +2,21 @@ using Asteroids.Game.Core;
 using Asteroids.Game.Signals;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Asteroids.Game.Management
 {
     public class ContainerManager : MonoBehaviour
     {
-        private IGame _game;
+        private IGameLoop _game;
         private static ContainerManager _instance;
         public GameState _gameState;
+
+        private ISignalService _signalService;
+
+        [Inject]
+        private void InitSignalService(ISignalService signalService) => _signalService = signalService;
+
 
         private void Awake()
         {
@@ -19,14 +26,14 @@ namespace Asteroids.Game.Management
 
         private void OnEnable()
         {
-            SignalService.Subscribe<GameStateUpdateSignal>(SetGameState);
-            SignalService.Subscribe<GameConfigLoadedSignal>(OnGameConfigLoaded);
+            _signalService.Subscribe<GameStateUpdateSignal>(SetGameState);
+            _signalService.Subscribe<GameConfigLoadedSignal>(OnGameConfigLoaded);
         }
 
 
         private void OnGameConfigLoaded(GameConfigLoadedSignal signal)
         {
-            _game = new GameLoop(signal.Value);
+            //_game = new GameLoop(signal.Value);
         }
 
         private void SetGameState(GameStateUpdateSignal signal)
@@ -41,8 +48,8 @@ namespace Asteroids.Game.Management
 
         private void OnDisable()
         {
-            SignalService.RemoveSignal<GameStateUpdateSignal>(SetGameState);
-            SignalService.RemoveSignal<GameConfigLoadedSignal>(OnGameConfigLoaded);
+            _signalService.RemoveSignal<GameStateUpdateSignal>(SetGameState);
+            _signalService.RemoveSignal<GameConfigLoadedSignal>(OnGameConfigLoaded);
         }
 
         public static void AddEntity(IGameEntity entity)
@@ -87,7 +94,7 @@ namespace Asteroids.Game.Management
                 return;
 
             if (_instance._game != null)
-                _instance._game.UpdateGame();
+                _instance._game.UpdateFrame();
         }
 
         private void FixedUpdate()
@@ -96,9 +103,9 @@ namespace Asteroids.Game.Management
                 return;
 
             if (_instance._game != null)
-                _instance._game.OnFixedUpdate();
+                _instance._game.FixedUpdateFrame();
         }
-        
+
         private void OnDestroy()
         {
             _game = null;

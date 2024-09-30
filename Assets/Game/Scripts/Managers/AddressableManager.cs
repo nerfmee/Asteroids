@@ -1,9 +1,10 @@
 using Asteroids.Game.Config;
+using Asteroids.Game.Services;
 using Asteroids.Game.Signals;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using Zenject;
 
 namespace Asteroids.Game.Management
 {
@@ -11,37 +12,34 @@ namespace Asteroids.Game.Management
     {
         [SerializeField] private AssetReference _gameConfigRef;
 
-        private IEnumerator Start()
+        private ISignalService _signalService;
+        private IAssetProvider _assetProvider;
+        private IConfigCollectionService _configService;
+
+        [Inject]
+        private void Init(ISignalService signalService,
+            IAssetProvider assetProvider,
+            IConfigCollectionService game)
         {
-            SignalService.Publish(new GameStateUpdateSignal { Value = GameState.Loading });
+            _signalService = signalService;
+            _assetProvider = assetProvider;
+            _configService = game;
+
+            StartCoroutine(LoadAssetRoutine());
+        }
+
+        private IEnumerator LoadAssetRoutine()
+        {
+            _signalService.Publish(new GameStateUpdateSignal { Value = GameState.Loading });
 
             //Fake Delay
             yield return new WaitForSeconds(1f);
 
-            LoadAddressableAsync<GameConfig>(_gameConfigRef, (handle) =>
+            _assetProvider.LoadAssetAsync<GameConfig>(_gameConfigRef, (asset) =>
             {
-                SignalService.Publish(new GameConfigLoadedSignal { Value = handle.Result });
+                _configService.SetGameConfig(asset);
+                _signalService.Publish(new GameConfigLoadedSignal { Value = asset });
             });
-        }
-
-        private void LoadAddressableAsync<T>(string assetPath, System.Action<AsyncOperationHandle<T>> callback)
-        {
-            var operation = Addressables.LoadAssetAsync<T>(assetPath);
-            operation.Completed += (handler) =>
-            {
-                if (handler.IsDone)
-                    callback.Invoke(handler);
-            };
-        }
-
-        private void LoadAddressableAsync<T>(AssetReference assetReference, System.Action<AsyncOperationHandle<T>> callback)
-        {
-            var operation = assetReference.LoadAssetAsync<T>();
-            operation.Completed += (handler) =>
-            {
-                if (handler.IsDone)
-                    callback.Invoke(handler);
-            };
         }
     }
 }

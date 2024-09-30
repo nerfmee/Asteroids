@@ -1,5 +1,8 @@
 using Asteroids.Game.Management;
+using Asteroids.Game.Services;
+using Asteroids.Game.Signals;
 using UnityEngine;
+using Zenject;
 
 namespace Asteroids.Game.Core
 {
@@ -8,23 +11,40 @@ namespace Asteroids.Game.Core
         private Vector2 _direction;
 
         public GameObject GameObject => gameObject;
-        protected Vector3 MoveDirection => _direction;
         public int DieScore { get; private set; }
 
-        public abstract void EntityUpdate();
+        protected Vector3 MoveDirection => _direction;
 
-        private void Start()
+        private IGameContainer _gameContainer;
+        protected GameEntitySpawnService _spawnService;
+        protected ISignalService _signalService;
+
+        [Inject]
+        private void Init(IGameContainer gameContainer,
+            GameEntitySpawnService spawnManager,
+            ISignalService signalService)
         {
-            ContainerManager.AddEntity(this);
+            _gameContainer = gameContainer;
+            _spawnService = spawnManager;
+            _signalService = signalService;
+            _gameContainer.AddEntity(this);
         }
 
         public virtual void EntityStart()
         {
         }
 
+        public virtual void EntityUpdate()
+        {
+        }
+
+        public virtual void EntityFixedUpdate()
+        {
+        }
+
         public virtual void DisposeEntity()
         {
-            ContainerManager.RemoveEntity(this);
+            _gameContainer.RemoveEntity(this);
             Destroy(gameObject);
         }
 
@@ -38,13 +58,28 @@ namespace Asteroids.Game.Core
             _direction = direction;
         }
 
-        public virtual void EntityFixedUpdate()
-        {
-        }
-
         public void OnInitialize(int score)
         {
             DieScore = score;
+        }
+
+        public class Factory : PlaceholderFactory<UnityEngine.Object, GameEntity>
+        {
+        }
+    }
+
+    public class GameEntityFactory : IFactory<UnityEngine.Object, GameEntity>
+    {
+        private readonly DiContainer _container;
+
+        public GameEntityFactory(DiContainer container)
+        {
+            _container = container;
+        }
+
+        public GameEntity Create(Object param)
+        {
+            return _container.InstantiatePrefabForComponent<GameEntity>(param);
         }
     }
 }

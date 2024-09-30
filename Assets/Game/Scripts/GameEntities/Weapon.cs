@@ -1,3 +1,4 @@
+using Asteroids.Game.Management;
 using UnityEngine;
 
 namespace Game.Scripts.GameEntities
@@ -18,12 +19,12 @@ namespace Game.Scripts.GameEntities
             _lastFireTime = 0f;
         }
 
-        public void TryShoot(Vector2 moveDirection)
+        public void TryShoot(GameEntitySpawnService spawnService, Vector2 moveDirection)
         {
             if (!CanShoot()) 
                 return;
             
-            Shoot(moveDirection);
+            Shoot(spawnService, moveDirection);
             _lastFireTime = Time.time;
         }
 
@@ -32,6 +33,6 @@ namespace Game.Scripts.GameEntities
             return Time.time - _lastFireTime >= _fireRate;
         }
 
-        protected abstract void Shoot(Vector2 moveDirection);
+        protected abstract void Shoot(GameEntitySpawnService spawnService, Vector2 moveDirection);
     }
 }

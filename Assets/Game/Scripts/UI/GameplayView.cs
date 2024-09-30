@@ -16,8 +16,8 @@ namespace Asteroids.Game.UI
         public override void OnScreenEnter()
         {
             base.OnScreenEnter();
-            SignalService.Subscribe<DisplayScoreSignal>(OnScoreUpdated);
-            SignalService.Subscribe<UpdatePlayerLivesSignal>(OnPlayerLifeChanged);
+            _signalService.Subscribe<DisplayScoreSignal>(OnScoreUpdated);
+            _signalService.Subscribe<UpdatePlayerLivesSignal>(OnPlayerLifeChanged);
 
             totalChances = new Image[3];
             for (int i = 0; i < totalChances.Length; i++)
@@ -31,8 +31,8 @@ namespace Asteroids.Game.UI
         {
             base.OnScreenExit();
 
-            SignalService.RemoveSignal<DisplayScoreSignal>(OnScoreUpdated);
-            SignalService.RemoveSignal<UpdatePlayerLivesSignal>(OnPlayerLifeChanged);
+            _signalService.RemoveSignal<DisplayScoreSignal>(OnScoreUpdated);
+            _signalService.RemoveSignal<UpdatePlayerLivesSignal>(OnPlayerLifeChanged);
 
             Clear();
         }
@@ -47,16 +47,6 @@ namespace Asteroids.Game.UI
             titleLabel.text = title;
         }
 
-        private void OnScoreUpdated(DisplayScoreSignal signal) => DisplayScore(signal.Value);
-
-        private void OnPlayerLifeChanged(UpdatePlayerLivesSignal signal)
-        {
-            for (int i = totalChances.Length - 1; i >= signal.Value; i--)
-            {
-                totalChances[i].gameObject.SetActive(false);
-            }
-        }
-
         public void Clear()
         {
             if (totalChances != null)
@@ -66,6 +56,16 @@ namespace Asteroids.Game.UI
                     Destroy(totalChances[i].gameObject);
                 }
                 totalChances = null;
+            }
+        }
+
+        private void OnScoreUpdated(DisplayScoreSignal signal) => DisplayScore(signal.Value);
+
+        private void OnPlayerLifeChanged(UpdatePlayerLivesSignal signal)
+        {
+            for (int i = totalChances.Length - 1; i >= signal.Value; i--)
+            {
+                totalChances[i].gameObject.SetActive(false);
             }
         }
     }
