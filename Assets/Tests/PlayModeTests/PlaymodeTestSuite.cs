@@ -111,7 +111,6 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
 
         // Call Container.Bind methods
 
-        Container.Bind<MainManager>().FromNewComponentOnNewGameObject().AsSingle();
         Container.Bind<ShipMovement>().FromComponentInNewPrefab(gameConfig.PlayerShip).AsSingle();
         Container.Bind<TComponent>().FromComponentInNewPrefab(mockGameObject).AsSingle();
 
@@ -128,6 +127,5 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
         Container.BindInterfacesAndSelfTo<GameLoop>().AsSingle().WhenInjectedInto<GameContainer>();
 
         PostInstall();
-        Container.Resolve<MainManager>();
     }
 }
