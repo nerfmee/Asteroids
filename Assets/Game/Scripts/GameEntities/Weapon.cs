@@ -33,6 +33,18 @@ namespace Game.Scripts.GameEntities
             return Time.time - _lastFireTime >= _fireRate;
         }
 
+        public float WeaponCooldown()
+        {
+            if (CanShoot())
+            {
+                float zeroCooldown = 0;
+                return zeroCooldown;
+            }
+            
+            float elapsed = Time.time - _lastFireTime;
+            return Mathf.Clamp01((_fireRate - elapsed) / _fireRate);
+        }
+
         protected abstract void Shoot(GameEntitySpawnService spawnService, Vector2 moveDirection);
     }
 }

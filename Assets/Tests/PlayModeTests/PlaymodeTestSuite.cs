@@ -47,11 +47,11 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
         profileService.SetTotalLives(3);
         var totallives = profileService.GetTotalLives();
 
-        var ship = Container.Resolve<ShipMovement>();
+        //var ship = Container.Resolve<ShipBehaviour>();
         var asteroid = Container.Resolve<Asteroid>();
         asteroid.SetVisibility(true);
 
-        ship.transform.position = asteroid.transform.position = new Vector3(0, 0, 0);
+        // ship.transform.position = asteroid.transform.position = new Vector3(0, 0, 0);
 
         yield return null;
 
@@ -69,11 +69,11 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
         profileService.SetTotalLives(3);
         var totallives = profileService.GetTotalLives();
 
-        var ship = Container.Resolve<ShipMovement>();
+        //var ship = Container.Resolve<ShipBehaviour>();
         var saucer = Container.Resolve<EnemySaucer>();
         saucer.SetVisibility(true);
 
-        ship.transform.position = saucer.transform.position = new Vector3(0, 0, 0);
+        //ship.transform.position = saucer.transform.position = new Vector3(0, 0, 0);
 
         yield return null;
 
@@ -91,11 +91,11 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
         profileService.SetTotalLives(3);
         var totallives = profileService.GetTotalLives();
 
-        var ship = Container.Resolve<ShipMovement>();
+        //var ship = Container.Resolve<ShipBehaviour>();
         var bullet = Container.Resolve<Bullet>();
         bullet.SetVisibility(true);
 
-        ship.transform.position = bullet.transform.position = new Vector3(0, 0, 0);
+        //ship.transform.position = bullet.transform.position = new Vector3(0, 0, 0);
 
         yield return null;
 
@@ -111,7 +111,7 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
 
         // Call Container.Bind methods
 
-        Container.Bind<ShipMovement>().FromComponentInNewPrefab(gameConfig.PlayerShip).AsSingle();
+       // Container.Bind<ShipBehaviour>().FromComponentInNewPrefab(gameConfig.PlayerShip).AsSingle();
         Container.Bind<TComponent>().FromComponentInNewPrefab(mockGameObject).AsSingle();
 
         Container.BindFactory<UnityEngine.Object, GameEntity, GameEntity.Factory>()
@@ -119,12 +119,12 @@ public class PlaymodeTestSuite : ZenjectIntegrationTestFixture
 
         Container.BindInterfacesAndSelfTo<SignalService>().AsSingle();
         Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<GameContainer>().AsSingle();
+        //Container.BindInterfacesAndSelfTo<GameContainer>().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemyWavesSpawnService>().AsSingle();
         Container.BindInterfacesAndSelfTo<GameEntitySpawnService>().AsSingle();
         Container.BindInterfacesAndSelfTo<ConfigCollectionService>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerProfileService>().AsSingle();
-        Container.BindInterfacesAndSelfTo<GameLoop>().AsSingle().WhenInjectedInto<GameContainer>();
+       // Container.BindInterfacesAndSelfTo<GameLoop>().AsSingle().WhenInjectedInto<GameContainer>();
 
         PostInstall();
     }
